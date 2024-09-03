@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: liquorsales-depl
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: liquorsalesservice
+  template:
+    metadata:
+      labels:
+        app: liquorsalesservice
+    spec:
+      containers:
+        - name: liquorsalesservice
+          image: keljombo/liquorsalesservice:latest
