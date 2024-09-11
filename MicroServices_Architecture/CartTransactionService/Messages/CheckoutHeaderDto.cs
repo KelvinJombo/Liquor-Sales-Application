@@ -1,8 +1,9 @@
 using CartTransactionService.Models.Dtos;
+using LiquorSale.MessageBus;
 
 namespace CartTransactionService.Messages
 {
-    public class CheckoutHeaderDto
+    public class CheckoutHeaderDto : BaseMessage
     {
         public int CartHeaderId { get; set; }
         public string UserId { get; set; }

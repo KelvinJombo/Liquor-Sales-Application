@@ -12,6 +12,8 @@ namespace CartTransactionService.Data
         public DbSet<Products> Products { get; set;}
         public DbSet<CartHeader> CartHeaders { get; set;}   
         public DbSet<CartDetails> CartDetails { get; set;}
+
+
     }
 }
 

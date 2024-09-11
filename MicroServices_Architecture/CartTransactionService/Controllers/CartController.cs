@@ -2,6 +2,7 @@ using CartTransactionService.Messages;
 using CartTransactionService.Models.Dtos;
 using CartTransactionService.Repository;
 using CartTransactionServices.Models.Dtos;
+using LiquorSale.MessageBus;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CartTransactionServices.Controllers
@@ -12,12 +13,15 @@ namespace CartTransactionServices.Controllers
     {
         private readonly ICartRepository _cartRepository;
         protected ResponseDto _response;
+        private readonly IMessageBus _messageBus;
+        private readonly ICouponRepository _couponRepository;
 
-
-        public CartController(ICartRepository cartRepository)
+        public CartController(ICartRepository cartRepository, IMessageBus messageBus, ICouponRepository couponRepository)
         {
             _cartRepository = cartRepository;
             _response = new ResponseDto();
+            _messageBus = messageBus;
+            _couponRepository = couponRepository;
         }
 
 
@@ -125,18 +129,31 @@ namespace CartTransactionServices.Controllers
                 {
                     return BadRequest();
                 }
+
+                if(!string.IsNullOrEmpty(checkout.CouponCode))
+                {
+                    CouponDto couponDto = await _couponRepository.GetCoupon(checkout.CouponCode);
+                    if(checkout.DiscountTotal != couponDto.DiscountAmount)
+                    {
+                        _response.IsSuccess = false;
+                        _response.ErrorMessages = new List<string>(){"Coupon Price has changed, please confirn and try again"};
+                        _response.DisplayMessage = "Coupon Price Has Changed, please Confirm and try again.";
+                        return _response;
+                    }
+                }
+
                 checkout.CartDetails = cartDto.CartDetails.Select(cd => new CartDetailsDto
                 {
                     CartDetailsId = cd.CartDetailsId,
                     CartHeaderId = cd.CartHeaderId,
                     ProductsId = cd.ProductsId,
                     Products = cd.Products,
-                    TotalAmount = cd.TotalAmount  
+                    TotalAmount = cd.TotalAmount, 
                     Count = cd.Count
                 }).ToList();
 
                 //logic to add message to process order
-
+                await _messageBus.PublishMessage(checkout, "checkoutmessagetopic");
 
             }
             catch(Exception ex)

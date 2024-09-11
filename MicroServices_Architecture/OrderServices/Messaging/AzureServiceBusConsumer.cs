@@ -15,10 +15,12 @@ namespace OrderService.Messaging
         private ServiceBusProcessor checkoutProcessor;
         private readonly IConfiguration _configuration;
         private readonly OrderRepository _orderRepository;
+         
 
         public AzureServiceBusConsumer(OrderRepository orderRepository, IConfiguration configuration)
         {
             _orderRepository = orderRepository;
+            _configuration = configuration;
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
             subscriptionCheckoutName = _configuration.GetValue<string>("liquorSalesOrderSubscription");
             checkoutMessageTopic = _configuration.GetValue<string>("checkoutmessagetopic");

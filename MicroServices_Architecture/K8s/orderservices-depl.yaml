@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: liquorsales-depl
+  name: orderapi-depl
 spec:
   replicas: 1
   selector:
     matchlabels:
-      app: liquorsalesservice
+      app: orderservices
   template:
     metadata:
       labels:
-        app: liquorsalesservice
+        app: orderservices
     spec:
       containers:
-        - name: liquorsalesservice
-          image: keljombo/liquorsalesservice:latest
+        - name: orderservices
+          image: keljombo/orderservices:latest
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: liquorsales-clusterip-srv
+  name: orderapi-clusterip-srv
 spec:
   type: ClusterIP
   selector:
-    app: liquorsalesservice
+    app: orderservices
   ports:
-    - name: liquorsalesservice
+    - name: orderservices
       protocol: TCP
       port: 80
       targetport: 80

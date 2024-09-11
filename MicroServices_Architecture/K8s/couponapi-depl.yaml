@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couponapi-depl
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: couponapi
+  template:
+    metadata:
+      labels:
+        app: couponapi
+    spec:
+      containers:
+        - name: couponapi
+          image: keljombo/couponapi:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: couponapi-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: couponapi
+  ports:
+    - name: couponapi
+      protocol: TCP
+      port: 80
+      targetport: 80

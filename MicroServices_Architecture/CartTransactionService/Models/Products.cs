@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CartTransactionService.Models
 {
@@ -11,6 +13,7 @@ namespace CartTransactionService.Models
         public string CompanyName { get; set; }  
         public string Description { get; set; }  
         [Required]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal CostPrice { get; set; }
         [Required]
         public string SellingPrice {get; set; }  

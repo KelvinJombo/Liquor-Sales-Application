@@ -28,10 +28,8 @@ app.UseHttpsRedirection();
 
  app.UseRouting();
  app.UseAuthorization();
- app.UseEndpoints(endpoints =>
- {
-    endpoints.MapControllers();
- });
+ app.MapControllers();
+ 
 // var summaries = new[]
 // {
 //     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carttransaction-depl
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: carttransactionservice
+  template:
+    metadata:
+      labels:
+        app: carttransactionservice
+    spec:
+      containers:
+        - name: carttransactionservice
+          image: keljombo/carttransactionservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carttransaction-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: cartransactionservice
+  ports:
+    - name: carttransactionservicey
+      protocol: TCP
+      port: 80
+      targetport: 80

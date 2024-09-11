@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,6 +13,7 @@ namespace CartTransactionService.Models
         [ForeignKey(nameof(ProductsId))]
         public string ProductsId { get; set;}        
         public virtual Products Products { get; set;}
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalAmount { get; set; }  
         public int Count { get; set;} 
     }
